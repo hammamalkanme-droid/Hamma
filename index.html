@@ -2,86 +2,94 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- ضبط مقاس شاشات الهواتف وتطبيقات التيليجرام المصغرة لمنع التداخل والتمطط -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة النخبة الإدارية</title>
-    
-    <!-- استيراد مكتبة تيليجرام الرسمية للتعرف التلقائي وحل مشكلة الطباعة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة أعضاء فريق النخبة</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <!-- استيراد خط Cairo الاحترافي للويب -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --primary-grad: linear-gradient(135deg, #0f766e, #115e59); /* تدرج زمردي فخم */
-            --primary-color: #0f766e;
-            --accent-color: #d97706; /* ذهبي دافئ */
-            --bg-color: #f8fafc;
+            --primary-color: #2d7a6f;
+            --secondary-color: #1f524a;
+            --bg-color: #f4f7f6;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+        }
+
+        /* تحسين الألوان لو المستخدم مشغل الوضع الداكن في تيليجرام */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #182533;
+                --card-bg: #223140;
+                --text-color: #f5f5f5;
+                --border-color: #2b394a;
+                --primary-color: #64b5a6;
+            }
         }
 
         * {
+            box-shadow: none;
             box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
+            color: var(--text-color);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
+            padding: 15px;
         }
 
-        /* 1. تنسيق شاشة التحقق والدخول */
-        #auth-screen {
+        .container {
             width: 100%;
-            max-width: 420px;
-            padding: 30px 20px;
+            max-width: 450px;
             background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin: 40px 15px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
             border: 1px solid var(--border-color);
         }
 
-        .auth-logo {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-grad);
+        /* حالة التحميل التلقائي */
+        .loading-box {
+            padding: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 20px auto;
-            color: white;
-            box-shadow: 0 8px 16px rgba(15, 118, 110, 0.2);
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
         }
 
-        .auth-title {
-            font-size: 15pt;
-            font-weight: 800;
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* شاشة تسجيل الدخول */
+        .login-box {
+            padding: 30px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .login-box h2 {
             color: var(--primary-color);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-size: 24px;
         }
 
-        .auth-desc {
-            font-size: 9.5pt;
-            color: var(--text-muted);
+        .login-box p {
+            color: #888;
+            font-size: 14px;
             margin-bottom: 25px;
-            line-height: 1.6;
         }
 
         .input-group {
@@ -91,624 +99,282 @@
 
         .input-group label {
             display: block;
-            font-size: 9pt;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
         }
 
-        .input-field {
+        .input-group input {
             width: 100%;
             padding: 12px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 10pt;
-            font-weight: 600;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             outline: none;
-            text-align: left; /* لكتابة اليوزر بالإنجليزي */
-            transition: border-color 0.2s;
+            font-size: 16px;
+            text-align: center;
+            background: transparent;
+            color: var(--text-color);
         }
 
-        .input-field:focus {
-            border-color: var(--primary-color);
-        }
-
-        .btn-action {
+        .btn {
             width: 100%;
-            background: var(--primary-grad);
+            padding: 12px;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 11pt;
-            font-weight: 700;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
-            transition: transform 0.2s;
-        }
-
-        .btn-action:active {
-            transform: scale(0.98);
-        }
-
-        .error-message {
-            color: #ef4444;
-            font-size: 9pt;
-            font-weight: 700;
             margin-top: 10px;
+        }
+
+        .error-msg {
+            color: #d9534f;
+            font-size: 14px;
+            margin-top: 15px;
             display: none;
         }
 
-        /* 2. حاوية التطبيق وبطاقة البيانات الشخصية (مخفية افتراضياً) */
-        .app-container {
-            display: none; /* تظهر فقط بعد نجاح التحقق */
-            width: 100%;
-            max-width: 520px;
-            background: var(--card-bg);
-            min-height: 100vh;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            position: relative;
-            flex-direction: column;
+        /* شاشة ملف العضو */
+        .profile-box {
+            display: none;
         }
 
-        /* زر الطباعة العلوي */
-        .no-print-btn {
-            background: var(--primary-grad);
+        .header-band {
+            background-color: var(--primary-color);
             color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 10.5pt;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        /* ترويسة الهوية البصرية */
-        .header-section {
-            background: var(--primary-grad);
-            border-radius: 16px;
             padding: 20px;
+            text-align: center;
+        }
+
+        .header-band .main-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            background-color: var(--primary-color);
             color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: 0 6px 20px rgba(15, 118, 110, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -30%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-            transform: rotate(30deg);
-            pointer-events: none;
-        }
-
-        .header-info h2 {
-            margin: 0;
-            font-size: 11pt;
-            font-weight: 300;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
             opacity: 0.9;
         }
 
-        .header-info h1 {
-            margin: 4px 0 0 0;
-            font-size: 20pt;
-            font-weight: 800;
-            color: #fef08a;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .logo-img {
-            width: 85px;
-            height: 85px;
-            object-fit: contain;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            border: 1.5px dashed rgba(255, 255, 255, 0.3);
-        }
-
-        /* العناوين الجانبية للأقسام */
-        .section-title {
-            font-size: 11.5pt;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin: 25px 0 12px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 6px;
-        }
-
-        .section-title::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 18px;
-            background-color: var(--accent-color);
-            border-radius: 3px;
-        }
-
-        /* بطاقات البيانات */
-        .data-card {
-            background: #fafafb;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 4px 12px;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 10px 0;
-            border-bottom: 1px dashed #e2e8f0;
-            font-size: 10pt;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .data-label {
-            font-weight: 700;
-            color: var(--text-muted);
-            min-width: 110px;
-            flex-shrink: 0;
-        }
-
-        .data-value {
-            color: var(--text-main);
-            font-weight: 600;
-            text-align: left;
-            word-break: break-word;
-        }
-
-        .data-value.highlight-name {
-            color: var(--primary-color);
-            font-size: 11pt;
-            font-weight: 800;
-        }
-
-        .data-value.badge {
-            background-color: #dcfce7;
-            color: #15803d;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 9pt;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .styled-list {
-            margin: 0;
-            padding-right: 18px;
-            font-size: 9.5pt;
-            color: var(--text-main);
-        }
-
-        .styled-list li {
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-            gap: 8px;
-            margin-top: 5px;
-        }
-
-        .skill-item {
-            background: #f1f5f9;
-            color: #334155;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 9pt;
-            font-weight: 700;
-            border-right: 3px solid var(--primary-color);
-            text-align: center;
-        }
-
-        /* التذييل والتوقيع */
-        .footer-section {
-            margin-top: auto;
-            padding-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .update-info {
-            font-size: 8.5pt;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .signature-container {
-            text-align: center;
-            width: 140px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .signature-img {
-            width: 110px;
-            height: auto;
-            max-height: 60px;
-            object-fit: contain;
-            margin-bottom: -15px;
-            display: block;
-        }
-
-        .signature-line {
-            border-top: 1.5px solid var(--text-main);
+        .info-table {
             width: 100%;
-            padding-top: 6px;
-            font-size: 10pt;
-            font-weight: 800;
-            color: var(--text-main);
+            border-collapse: collapse;
         }
 
-        .demo-tag {
+        .info-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 15px;
+        }
+
+        .info-table td.label {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 35%;
+        }
+
+        .skills-container {
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background-color: rgba(45, 122, 111, 0.1);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(45, 122, 111, 0.2);
+        }
+
+        .footer-note {
+            padding: 15px;
+            font-size: 12px;
+            color: #888;
             text-align: center;
-            font-size: 8.5pt;
-            color: var(--text-muted);
-            margin-top: 20px;
-            font-style: italic;
-            opacity: 0.6;
+            background: rgba(0,0,0,0.02);
         }
 
-        /* إعدادات الطباعة كـ PDF تلقائياً */
-        @media print {
-            body {
-                background-color: #ffffff;
-            }
-            #auth-screen {
-                display: none !important;
-            }
-            .app-container {
-                display: flex !important;
-                max-width: 100%;
-                box-shadow: none;
-                padding: 0;
-            }
-            .no-print-btn {
-                display: none !important;
-            }
-            .header-section {
-                border-radius: 0;
-                box-shadow: none;
-            }
-            .data-card {
-                border: 1px solid #94a3b8;
-            }
+        .logout-btn {
+            background: #d9534f;
+            margin: 15px;
+            width: calc(100% - 30px);
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. شاشة قفل التحقق والدخول للمتصفحات العادية -->
-    <div id="auth-screen">
-        <div class="auth-logo">🦅</div>
-        <div class="auth-title">بوابة أعضاء النخبة</div>
-        <div class="auth-desc">
-            جاري فحص حساب التيليجرام الخاص بك للدخول التلقائي...<br>
-            إذا لم تكن تفتح الصفحة من تيليجرام، يرجى كتابة معرفك بالأسفل للتجربة.
+<div class="container">
+    <div id="loadingSection" class="loading-box">
+        <div class="spinner"></div>
+        <p>جاري التحقق من الهوية الرقمية عبر تيليجرام...</p>
+    </div>
+
+    <div id="loginSection" class="login-box">
+        <h2>فريق النخبة</h2>
+        <p>بوابة الاستعلام عن ملفات الأعضاء الشخصية</p>
+        
+        <div class="input-group">
+            <label for="username">اسم المستخدم (بدون @):</label>
+            <input type="text" id="username" placeholder="مثال: h1mm4" autocomplete="off">
         </div>
         
         <div class="input-group">
-            <label for="usernameInput">معرف التيليجرام (دون رمز @):</label>
-            <input type="text" id="usernameInput" class="input-field" placeholder="مثال: H1MM4">
+            <label for="pin">الرمز السري:</label>
+            <input type="password" id="pin" placeholder="••••" inputmode="numeric">
         </div>
         
-        <button class="btn-action" onclick="handleManualAuth()">التحقق والدخول</button>
-        <div id="error-box" class="error-message">عذراً، هذا الحساب غير مسجل في النخبة!</div>
+        <button class="btn" onclick="manualLogin()">تسجيل الدخول</button>
+        <div id="errorMsg" class="error-msg"></div>
     </div>
 
-    <!-- 2. شاشة بطاقة البيانات الشخصية للمشترك (مخفية وتظهر بعد التحقق) -->
-    <div id="app-container" class="app-container">
-        
-        <button class="no-print-btn" onclick="handlePrint()">
-            🖨️ طباعة أو تحميل كـ PDF
-        </button>
-
-        <!-- ترويسة الهوية البصرية -->
-        <div class="header-section">
-            <div class="header-info">
-                <h2>الإدارة العامة</h2>
-                <h1>فريق النخبة</h1>
-            </div>
-            <img src="./logo.png" alt="شعار النخبة" class="logo-img" onerror="this.style.display='none';">
+    <div id="profileSection" class="profile-box">
+        <div class="header-band">
+            <div style="font-size: 12px; opacity: 0.8;">الإدارة العامة</div>
+            <div class="main-title">فريق النخبة</div>
         </div>
 
-        <!-- القسم الأول: الملف الشخصي -->
-        <div class="section-title">بطاقة العضو – ملف البيانات الشخصي</div>
-        <div class="data-card">
-            <div class="data-row">
-                <span class="data-label">الاسم الثنائي:</span>
-                <span id="m-name" class="data-value highlight-name">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">المعرف في تيليجرام:</span>
-                <span id="m-username" class="data-value" style="color: var(--primary-color); font-family: monospace; font-size: 10.5pt;">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">الصفة:</span>
-                <span id="m-title" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">الرقم التعريفي:</span>
-                <span id="m-id" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">القسم / اللجنة:</span>
-                <span id="m-department" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">تاريخ الانضمام:</span>
-                <span id="m-joinDate" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">مدة العضوية:</span>
-                <span id="m-duration" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">العضوية:</span>
-                <span class="data-value"><span class="badge">🔹 فعالة</span></span>
-            </div>
+        <div class="section-title">بطاقة العضو التعريفية</div>
+        <table class="info-table">
+            <tr>
+                <td class="label">الاسم الثنائي:</td>
+                <td id="res-name"></td>
+            </tr>
+            <tr>
+                <td class="label">المعرف:</td>
+                <td id="res-username" style="font-weight: bold;"></td>
+            </tr>
+            <tr>
+                <td class="label">الصفة والمناصب:</td>
+                <td id="res-title"></td>
+            </tr>
+            <tr>
+                <td class="label">اللجان والملفات:</td>
+                <td id="res-department"></td>
+            </tr>
+            <tr>
+                <td class="label">تاريخ الانضمام:</td>
+                <td id="res-joinDate"></td>
+            </tr>
+        </table>
+
+        <div class="section-title">القدرات والمهارات الشخصية</div>
+        <div class="skills-container" id="res-skills"></div>
+
+        <div class="footer-note">
+            منظومة النخبة الرقمية الآمنة 2026
         </div>
 
-        <!-- القسم الثاني: البيانات العملية -->
-        <div class="section-title">البيانات الإدارية والعملية</div>
-        <div class="data-card">
-            <div class="data-row">
-                <span class="data-label">الدرجة الوظيفية:</span>
-                <span id="m-grade" class="data-value">-</span>
-            </div>
-            <div class="data-row" style="flex-direction: column; gap: 6px;">
-                <span class="data-label">الصلاحيات الحالية:</span>
-                <span id="m-permissions" class="data-value" style="text-align: right;">-</span>
-            </div>
-            <div class="data-row" style="flex-direction: column; gap: 10px;">
-                <span class="data-label">المهام المسندة:</span>
-                <span class="data-value" style="width: 100%;">
-                    <ol id="m-duties" class="styled-list">
-                        <!-- تُضاف ديناميكياً -->
-                    </ol>
-                </span>
-            </div>
-        </div>
-
-        <!-- القسم الثالث: متابعة الأداء -->
-        <div class="section-title">متابعة الأداء</div>
-        <div class="data-card">
-            <div class="data-row">
-                <span class="data-label">التقارير المقدمة:</span>
-                <span id="m-reports" class="data-value">-</span>
-            </div>
-            <div class="data-row" style="flex-direction: column; gap: 8px;">
-                <span class="data-label">نقاط العمل:</span>
-                <span id="m-points" class="data-value" style="width: 100%;">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">آخر تقييم إداري:</span>
-                <span id="m-evaluation" class="data-value">-</span>
-            </div>
-        </div>
-
-        <!-- القسم الرابع: الملاحظات والمخالفات -->
-        <div class="section-title">الملحوظات والمخالفات</div>
-        <div class="data-card">
-            <div class="data-row">
-                <span class="data-label">الملاحظات:</span>
-                <span id="m-notes" class="data-value" style="color: var(--text-muted); font-style: italic;">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">التنبيهات:</span>
-                <span id="m-warnings" class="data-value">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">المخالفات:</span>
-                <span id="m-violations" class="data-value">-</span>
-            </div>
-        </div>
-
-        <!-- القسم الخامس: القدرات والمميزات -->
-        <div class="section-title">معلومات إضافية وميزات</div>
-        <div class="data-card" style="padding: 15px 12px;">
-            <div style="font-weight: 700; color: var(--text-muted); font-size: 10pt; margin-bottom: 10px;">قدرات مميزة:</div>
-            <div id="m-skills" class="skills-grid">
-                <!-- تُضاف ديناميكياً -->
-            </div>
-            
-            <div style="border-top: 1px dashed var(--border-color); margin-top: 15px; padding-top: 10px;">
-                <div style="font-weight: 700; color: var(--text-muted); font-size: 10pt; margin-bottom: 5px;">الأهداف داخل الفريق:</div>
-                <div style="font-size: 9pt; color: var(--text-muted); font-style: italic; line-height: 1.4;">
-                    بإمكان صاحب البيانات كتابة أهدافه وإرسالها على بوت بوتشن.
-                </div>
-            </div>
-        </div>
-
-        <!-- التذييل والتوقيع الرسمي -->
-        <div class="footer-section">
-            <div class="update-info">
-                <strong>آخر تحديث:</strong> <span id="m-update-date">-</span><br>
-                <span>لأي تعديل يرجى مراجعة الإدارة العامة</span>
-            </div>
-            <div class="signature-container">
-                <img src="./signature.png" alt="توقيع همام الكانمي" class="signature-img" onerror="this.style.display='none';">
-                <div class="signature-line">توقيع المدير</div>
-            </div>
-        </div>
-
-        <div class="demo-tag">ملف رسمي - فريق النخبة</div>
-
+        <button class="btn logout-btn" onclick="logout()">تسجيل الخروج</button>
     </div>
+</div>
 
-    <!-- برمجة جافا سكريبت الذكية للتحقق والتعرف وبناء البيانات -->
-    <script>
-        // قاعدة البيانات المخزنة للأعضاء (يمكن إضافة حتى 50 عضواً بنفس الطريقة هنا)
-        const membersDatabase = {
-            "h1mm4": {
-                name: "همام الكانمي",
-                username: "@H1MM4",
-                title: "مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحًا.",
-                id: "غير متوفر حاليًا",
-                department: "الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحًا.",
-                joinDate: "٢٦ مارس ٢٠٢٤",
-                duration: "غير محدود",
-                grade: "المدير التنفيذي، مدير مشروع، مسؤول لجنة.",
-                permissions: "جميع الصلاحيات المسموح بها للإدارة العامة بعد أخذ رأي أعضاء الإدارة.",
-                duties: [
-                    "المحافظة على سلامة العلاقات الاجتماعية بين أعضاء الفريق الذكور.",
-                    "التواصل مع الأعضاء الذكور في الظروف الحرجة والداعمة.",
-                    "التعاون المستمر مع مسؤولي اللجان لمعرفة وحل المشاكل داخل الفريق.",
-                    "أحد مصممي الفريق.",
-                    "الإشراف في مناقشة فضاء.",
-                    "تطوير بوتات الفريق.",
-                    "تقييم الإجابات في لجنة التسجيل والانتساب.",
-                    "مهام مدير مشروع بوتات زيد كتنفيذ الخطط والأوامر ورفع تقاريره.",
-                    "مهام مدير مشروع لأكون فصيحًا كتنفيذ الخطط والأوامر ورفع تقاريره."
-                ],
-                reports: "0 تقارير",
-                points: "9 نقاط عمل (3 نقاط بمشروع الاختبارات، 2 نقاط بمشروع فضاء أولى ثانوي، 4 نقاط بمشروع فضاء ثانية ثانوي)",
-                evaluation: "⭐⭐⭐⭐⭐ (0/5) (غير متوفر حالياً)",
-                notes: "غير متوفر حالياً",
-                warnings: "0 تنبيه",
-                violations: "0 مخالفة",
-                skills: ["كاتب مبتدئ", "خبرة في التصميم", "متفاعل دائم", "خبرة بالتيليجرام", "مبتكر ومبدع", "ناقد بناء", "أفكار مبتكرة", "حازم بالقرارات", "صارم مع الجدد", "مطور بوتات", "محرر محتوى", "يعمل تحت الضغط", "إعداد النماذج"],
-                updateDate: "1 يوليو 2026"
-            },
+<script>
+    // قاعدة البيانات المدمجة (بياناتك الحقيقية + حساب وهمي للتجربة)
+    const membersDatabase = [
+        {
+            username: "h1mm4",
+            pin: "2026",
+            name: "همام أحمد الكانمي",
+            title: "مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحاً.",
+            department: "الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحاً.",
+            joinDate: "26 مارس 2024",
+            skills: ["كاتب مبتدئ", "خبرة في التصميم", "متفاعل بشكل دائم", "خبرة واسعة في التيليجرام", "مطور بوتات", "يعمل تحت الضغط", "إعداد النماذج والملفات"]
+        },
+        {
+            username: "elite_test",
+            pin: "7788",
+            name: "عضو تجريبي وهمي",
+            title: "نائب مسؤول قسم التصميم",
+            department: "اللجنة الفنية، قسم الميديا والتصميم",
+            joinDate: "1 يناير 2026",
+            skills: ["تصميم فوتوشوب", "تنسيق ألوان", "مونتاج سريع"]
+        }
+    ];
+
+    // بدء تشغيل وتجهيز التطبيق المصغر
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand(); // تمديد التطبيق ليأخذ الشاشة كاملة
             
-            // عضو آخر تجريبي لتجربة الفكرة والتبديل
-            "test_user": {
-                name: "أحمد بن علي (عضو تجريبي)",
-                username: "@test_user",
-                title: "عضو لجنة التصميم والإنتاج الإبداعي",
-                id: "ELITE-4050",
-                department: "لجنة التصميم، قسم مشروع فضاء.",
-                joinDate: "10 يناير 2025",
-                duration: "سنة واحدة",
-                grade: "مصمم إعلاني",
-                permissions: "صلاحيات الوصول للمواد الإعلامية للنشر.",
-                duties: [
-                    "تصميم الملصقات الرسمية لإعلانات القناة.",
-                    "مساعدة الطلاب في تجهيز النماذج البصرية."
-                ],
-                reports: "3 تقارير مصممة",
-                points: "5 نقاط عمل في لجنة الإبداع",
-                evaluation: "⭐⭐⭐⭐ (4.5/5)",
-                notes: "أداء متميز وتواجد دائم وقت الطوارئ.",
-                warnings: "0 تنبيه",
-                violations: "0 مخالفة",
-                skills: ["الفوتوشوب", "صناعة الشعارات", "التواصل الفعال", "السرعة بالأداء"],
-                updateDate: "1 يوليو 2026"
-            }
-        };
-
-        // دالة لعرض وبناء البيانات في الصفحة
-        function renderMemberProfile(member) {
-            document.getElementById('m-name').innerText = member.name;
-            document.getElementById('m-username').innerText = member.username;
-            document.getElementById('m-title').innerText = member.title;
-            document.getElementById('m-id').innerText = member.id;
-            document.getElementById('m-department').innerText = member.department;
-            document.getElementById('m-joinDate').innerText = member.joinDate;
-            document.getElementById('m-duration').innerText = member.duration;
-            document.getElementById('m-grade').innerText = member.grade;
-            document.getElementById('m-permissions').innerText = member.permissions;
-            document.getElementById('m-reports').innerText = member.reports;
-            document.getElementById('m-points').innerText = member.points;
-            document.getElementById('m-evaluation').innerHTML = member.evaluation;
-            document.getElementById('m-notes').innerText = member.notes;
-            document.getElementById('m-warnings').innerText = member.warnings;
-            document.getElementById('m-violations').innerText = member.violations;
-            document.getElementById('m-update-date').innerText = member.updateDate;
-
-            // بناء قائمة المهام
-            const dutiesList = document.getElementById('m-duties');
-            dutiesList.innerHTML = '';
-            member.duties.forEach(duty => {
-                const li = document.createElement('li');
-                li.innerText = duty;
-                dutiesList.appendChild(li);
-            });
-
-            // بناء شبكة المهارات
-            const skillsGrid = document.getElementById('m-skills');
-            skillsGrid.innerHTML = '';
-            member.skills.forEach(skill => {
-                const div = document.createElement('div');
-                div.className = 'skill-item';
-                div.innerText = skill;
-                skillsGrid.appendChild(div);
-            });
-
-            // إخفاء شاشة الدخول وإظهار بطاقة العضو
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('app-container').style.display = 'flex';
-        }
-
-        // دالة التحقق اليدوي (للمتصفحات العادية)
-        function handleManualAuth() {
-            const inputVal = document.getElementById('usernameInput').value.trim().toLowerCase();
-            const errorBox = document.getElementById('error-box');
-
-            if (membersDatabase[inputVal]) {
-                errorBox.style.display = 'none';
-                renderMemberProfile(membersDatabase[inputVal]);
-            } else {
-                errorBox.style.display = 'block';
-            }
-        }
-
-        // دالة الطباعة وتصدير PDF الذكية المتوافقة مع تيليجرام
-        function handlePrint() {
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.platform !== 'unknown') {
-                Telegram.WebApp.openLink(window.location.href);
-            } else {
-                window.print();
-            }
-        }
-
-        // التحقق التلقائي عند فتح التطبيق مباشرة
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.ready();
-                Telegram.WebApp.expand(); // جعل التطبيق يعرض بكامل حجم الشاشة
-
-                // جلب يوزر المستخدم من تيليجرام تلقائياً
-                const tgUser = Telegram.WebApp.initDataUnsafe?.user;
-                if (tgUser && tgUser.username) {
-                    const tgUsernameLower = tgUser.username.toLowerCase();
-                    
-                    // إذا كان اليوزر مسجل لدينا بقاعدة البيانات، افتح ملفه مباشرة وبدون شاشة قفل!
-                    if (membersDatabase[tgUsernameLower]) {
-                        renderMemberProfile(membersDatabase[tgUsernameLower]);
-                    }
+            // محاولة التقاط اسم المستخدم تلقائياً من التيليجرام
+            const tgUser = window.Telegram.WebApp.initDataUnsafe?.user?.username;
+            
+            if (tgUser) {
+                const cleanTgUser = tgUser.trim().toLowerCase();
+                // البحث في قاعدة البيانات إذا كان اليوزر مسجل لتسجيل دخوله تلقائياً
+                const foundUser = membersDatabase.find(m => m.username === cleanTgUser);
+                
+                if (foundUser) {
+                    showProfile(foundUser);
+                    return; // تسجيل دخول تلقائي ناجح!
                 }
             }
+        }
+        
+        // إذا فشل التعرف التلقائي أو فتح من متصفح عادي، اظهر شاشة الدخول اليدوي
+        document.getElementById('loadingSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+    });
+
+    // تسجيل الدخول اليدوي باليوزر والرمز
+    function manualLogin() {
+        const userInput = document.getElementById('username').value.trim().toLowerCase();
+        const pinInput = document.getElementById('pin').value.trim();
+        const errorMsg = document.getElementById('errorMsg');
+
+        const user = membersDatabase.find(m => m.username === userInput && m.pin === pinInput);
+
+        if (user) {
+            errorMsg.style.display = 'none';
+            showProfile(user);
+        } else {
+            errorMsg.innerText = 'اسم المستخدم أو الرمز السري غير صحيح!';
+            errorMsg.style.display = 'block';
+        }
+    }
+
+    // دالة عرض الملف الشخصي وتعبئة البيانات
+    function showProfile(user) {
+        document.getElementById('loadingSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'block';
+
+        document.getElementById('res-name').innerText = user.name;
+        document.getElementById('res-username').innerText = '@' + user.username.toUpperCase();
+        document.getElementById('res-title').innerText = user.title;
+        document.getElementById('res-department').innerText = user.department;
+        document.getElementById('res-joinDate').innerText = user.joinDate;
+
+        const skillsDiv = document.getElementById('res-skills');
+        skillsDiv.innerHTML = '';
+        user.skills.forEach(skill => {
+            const span = document.createElement('span');
+            span.className = 'skill-tag';
+            span.innerText = skill;
+            skillsDiv.appendChild(span);
         });
-    </script>
+    }
+
+    // تسجيل الخروج والعودة للشاشة اليدوية
+    function logout() {
+        document.getElementById('username').value = '';
+        document.getElementById('pin').value = '';
+        document.getElementById('profileSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+    }
+</script>
 
 </body>
 </html>
