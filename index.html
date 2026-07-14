@@ -1,229 +1,486 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>بطاقة العضو – ملف البيانات الشخصي</title>
-<style>
-    @page {
-        size: A4;
-        margin: 20mm 15mm;
-        background-color: #ffffff;
-        @bottom-left {
-            content: "صفحة " counter(page) " من " counter(pages);
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            font-size: 9pt;
-            color: #94a3b8;
+    <meta charset="UTF-8">
+    <!-- إعدادات هامة جداً لضبط مقاس شاشات الهواتف وتطبيقات التيليجرام المصغرة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بيانات النخبة | همام الكانمي</title>
+    
+    <!-- استيراد خط Cairo الاحترافي للويب -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-grad: linear-gradient(135deg, #0f766e, #115e59); /* تدرج زمردي فخم */
+            --primary-color: #0f766e;
+            --accent-color: #d97706; /* ذهبي دافئ */
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
         }
-    }
-    * { box-sizing: border-box; }
-    body {
-        margin: 0; padding: 0;
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        color: #1e293b; line-height: 1.6;
-        background-color: #ffffff;
-    }
-    .header-table {
-        width: 100%; border-collapse: collapse;
-        margin-bottom: 25px; border-bottom: 3px solid #0f766e;
-    }
-    .header-title { vertical-align: middle; text-align: right; padding-bottom: 15px; }
-    .header-title h1 { margin: 0; font-size: 20pt; color: #0f766e; font-weight: bold; }
-    .header-title p { margin: 6px 0 0 0; font-size: 13pt; color: #475569; font-weight: 600; }
-    .header-logo { vertical-align: middle; text-align: left; width: 150px; padding-bottom: 15px; }
-    .logo-box {
-        border: 2px dashed #cbd5e1; border-radius: 6px;
-        height: 75px; width: 140px; text-align: center;
-        background-color: #f8fafc; padding-top: 25px;
-        color: #94a3b8; font-size: 9pt; font-weight: bold;
-    }
-    h2 {
-        font-size: 13pt; color: #ffffff; background-color: #0f766e;
-        margin-top: 20px; margin-bottom: 12px; padding: 6px 12px;
-        border-radius: 4px; page-break-after: avoid;
-    }
-    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; page-break-inside: avoid; }
-    .info-table td { padding: 8px 12px; border: 1px solid #e2e8f0; font-size: 10.5pt; vertical-align: top; }
-    .info-table .label { font-weight: bold; color: #334155; width: 22%; background-color: #f8fafc; }
-    .info-table .value { color: #0f172a; width: 78%; }
-    .badge { display: inline-block; background-color: #dcfce7; color: #16a34a; padding: 1px 8px; border-radius: 4px; font-weight: bold; font-size: 9.5pt; }
-    ol, ul { margin: 0; padding-right: 20px; }
-    li { margin-bottom: 5px; font-size: 10.5pt; }
-    .sub-list { margin-top: 5px; list-style-type: square; }
-    .columns-table { width: 100%; border-collapse: collapse; page-break-inside: avoid; }
-    .columns-table td { width: 50%; vertical-align: top; padding: 0 0 0 10px; }
-    .columns-table td:last-child { padding: 0 10px 0 0; }
-    .skill-card { background-color: #f1f5f9; padding: 6px 12px; margin-bottom: 6px; border-radius: 4px; font-size: 10pt; border-right: 3px solid #0f766e; }
-    .footer-table { width: 100%; border-collapse: collapse; margin-top: 35px; page-break-inside: avoid; }
-    .footer-meta { text-align: right; font-size: 9.5pt; color: #64748b; vertical-align: bottom; padding-bottom: 10px; }
-    .footer-signature { text-align: left; vertical-align: bottom; width: 220px; }
-    .signature-area { border-top: 1px solid #475569; margin-top: 60px; text-align: center; padding-top: 8px; font-weight: bold; font-size: 11pt; color: #1e293b; }
-    .trial-text { text-align: center; font-size: 9pt; color: #cbd5e1; margin-top: 25px; font-style: italic; }
-</style>
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* حاوية التطبيق المصمم للهاتف */
+        .app-container {
+            width: 100%;
+            max-width: 520px; /* مقاس مثالي جداً لداخل التيليجرام */
+            background: var(--card-bg);
+            min-height: 100vh;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* زر الطباعة العلوي */
+        .no-print-btn {
+            background: var(--primary-grad);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 10.5pt;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .no-print-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* ترويسة الهوية البصرية */
+        .header-section {
+            background: var(--primary-grad);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(15, 118, 110, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثيرات جمالية خلفية */
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .header-info h2 {
+            margin: 0;
+            font-size: 11pt;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .header-info h1 {
+            margin: 4px 0 0 0;
+            font-size: 20pt;
+            font-weight: 800;
+            color: #fef08a; /* لمسة ذهبية خفيفة للنخبة */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* مكان وضع الشعار بطريقة فخمة */
+        .logo-placeholder {
+            width: 85px;
+            height: 85px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 8pt;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            padding: 5px;
+        }
+
+        /* العناوين الجانبية للأقسام */
+        .section-title {
+            font-size: 11.5pt;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 25px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 18px;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        /* بطاقات البيانات المتجاوبة (بديل الجداول لتفادي الضغط والتداخل) */
+        .data-card {
+            background: #fafafb;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 4px 12px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 10pt;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 110px;
+            flex-shrink: 0;
+        }
+
+        .data-value {
+            color: var(--text-main);
+            font-weight: 600;
+            text-align: left;
+            word-break: break-word; /* لمنع خروج الكلمات الطويلة عن الشاشة */
+        }
+
+        .data-value.highlight-name {
+            color: var(--primary-color);
+            font-size: 11pt;
+            font-weight: 800;
+        }
+
+        .data-value.badge {
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        /* تنسيق القوائم الطويلة */
+        .styled-list {
+            margin: 0;
+            padding-right: 18px;
+            font-size: 9.5pt;
+            color: var(--text-main);
+        }
+
+        .styled-list li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* شبكة المهارات والقدرات الممتازة المتجاوبة تلقائياً */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .skill-item {
+            background: #f1f5f9;
+            color: #334155;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 9pt;
+            font-weight: 700;
+            border-right: 3px solid var(--primary-color);
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        /* التذييل والتوقيع */
+        .footer-section {
+            margin-top: auto;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .update-info {
+            font-size: 8.5pt;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .signature-container {
+            text-align: center;
+            width: 140px;
+        }
+
+        .signature-line {
+            border-top: 1.5px solid var(--text-main);
+            margin-top: 40px;
+            padding-top: 6px;
+            font-size: 10pt;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .demo-tag {
+            text-align: center;
+            font-size: 8.5pt;
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-style: italic;
+            opacity: 0.6;
+        }
+
+        /* تخصيص إعدادات الطباعة كـ PDF تلقائياً عند طلبها */
+        @media print {
+            body {
+                background-color: #ffffff;
+            }
+            .app-container {
+                max-width: 100%;
+                box-shadow: none;
+                padding: 0;
+            }
+            .no-print-btn {
+                display: none !important; /* إخفاء زر الطباعة بالكامل داخل ملف الـ PDF */
+            }
+            .header-section {
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .data-card {
+                border: 1px solid #94a3b8;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <table class="header-table">
-        <tr>
-            <td class="header-title">
-                <p>الإدارة العامة</p>
+    <div class="app-container">
+        
+        <!-- زر ذكي يظهر فقط بالويب ويختفي بالـ PDF -->
+        <button class="no-print-btn" onclick="window.print()">
+            🖨️ طباعة أو تحميل كـ PDF
+        </button>
+
+        <!-- الترويسة الفخمة الهوية البصرية -->
+        <div class="header-section">
+            <div class="header-info">
+                <h2>الإدارة العامة</h2>
                 <h1>فريق النخبة</h1>
-            </td>
-            <td class="header-logo">
-                <div class="logo-box">شعار النخبة</div>
-            </td>
-        </tr>
-    </table>
+            </div>
+            <!-- مساحة مخصصة لشعار النخبة تظهر بتصميم احترافي -->
+            <div class="logo-placeholder">
+                <span style="font-size: 16px; margin-bottom: 4px;">✨</span>
+                مكان الشعار
+            </div>
+        </div>
 
-    <h2>بطاقة العضو – ملف البيانات الشخصي</h2>
-    <table class="info-table">
-        <tr>
-            <td class="label">الاسم الثنائي:</td>
-            <td class="value" style="font-weight: bold; color: #0f766e; font-size: 11.5pt;">همام الكانمي</td>
-        </tr>
-        <tr>
-            <td class="label">المعرف في تيليجرام:</td>
-            <td class="value" dir="ltr" style="text-align: right;">@H1MM4</td>
-        </tr>
-        <tr>
-            <td class="label">الصفة:</td>
-            <td class="value">مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحًا.</td>
-        </tr>
-        <tr>
-            <td class="label">الرقم التعريفي:</td>
-            <td class="value" style="color: #94a3b8; font-style: italic;">غير متوفر حاليًا</td>
-        </tr>
-        <tr>
-            <td class="label">القسم / اللجنة:</td>
-            <td class="value">الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحًا.</td>
-        </tr>
-        <tr>
-            <td class="label">تاريخ الانضمام:</td>
-            <td class="value">٢٦ مارس ٢٠٢٤</td>
-        </tr>
-        <tr>
-            <td class="label">مدة العضوية الحالية:</td>
-            <td class="value">غير محدود</td>
-        </tr>
-        <tr>
-            <td class="label">العضوية:</td>
-            <td class="value"><span class="badge">🔹 فعالة</span></td>
-        </tr>
-    </table>
+        <!-- القسم الأول: الملف الشخصي -->
+        <div class="section-title">بطاقة العضو – ملف البيانات الشخصي</div>
+        <div class="data-card">
+            <div class="data-row">
+                <span class="data-label">الاسم الثنائي:</span>
+                <span class="data-value highlight-name">همام الكانمي</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">المعرف في تيليجرام:</span>
+                <span class="data-value" style="color: var(--primary-color); font-family: monospace; font-size: 10.5pt;">@H1MM4</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">الصفة:</span>
+                <span class="data-value">مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحًا.</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">الرقم التعريفي:</span>
+                <span class="data-value" style="color: var(--text-muted); font-style: italic;">غير متوفر حاليًا</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">القسم / اللجنة:</span>
+                <span class="data-value">الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحًا.</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">تاريخ الانضمام:</span>
+                <span class="data-value">٢٦ مارس ٢٠٢٤</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">مدة العضوية:</span>
+                <span class="data-value">غير محدود</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">العضوية:</span>
+                <span class="data-value"><span class="badge">🔹 فعالة</span></span>
+            </div>
+        </div>
 
-    <h2>البيانات الإدارية والعملية</h2>
-    <table class="info-table">
-        <tr>
-            <td class="label">الدرجة الوظيفية:</td>
-            <td class="value">المدير التنفيذي، مدير مشروع، مسؤول لجنة.</td>
-        </tr>
-        <tr>
-            <td class="label">الصلاحيات الحالية:</td>
-            <td class="value">جميع الصلاحيات المسموح بها للإدارة العامة بعد أخذ رأي أعضاء الإدارة.</td>
-        </tr>
-        <tr>
-            <td class="label">المهام المسندة:</td>
-            <td class="value">
-                <ol>
-                    <li>المحافظة على سلامة العلاقات الاجتماعية بين أعضاء الفريق الذكور.</li>
-                    <li>التواصل مع الأعضاء الذكور في الظروف الحرجة والداعمة.</li>
-                    <li>التعاون المستمر مع مسؤولي اللجان لمعرفة وحل المشاكل التي قد تحدث داخل الفريق.</li>
-                    <li>أحد مصممي الفريق.</li>
-                    <li>الإشراف في مناقشة فضاء.</li>
-                    <li>تطوير بوتات الفريق.</li>
-                    <li>تقييم الإجابات في لجنة التسجيل والانتساب.</li>
-                    <li>مهام مدير مشروع بوتات زيد كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
-                    <li>مهام مدير مشروع لأكون فصيحًا كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
-                </ol>
-            </td>
-        </tr>
-    </table>
+        <!-- القسم الثاني: البيانات الإدارية والعملية -->
+        <div class="section-title">البيانات الإدارية والعملية</div>
+        <div class="data-card">
+            <div class="data-row">
+                <span class="data-label">الدرجة الوظيفية:</span>
+                <span class="data-value">المدير التنفيذي، مدير مشروع، مسؤول لجنة.</span>
+            </div>
+            <div class="data-row" style="flex-direction: column; gap: 6px;">
+                <span class="data-label">الصلاحيات الحالية:</span>
+                <span class="data-value" style="text-align: right;">جميع الصلاحيات المسموح بها للإدارة العامة بعد أخذ رأي أعضاء الإدارة.</span>
+            </div>
+            <div class="data-row" style="flex-direction: column; gap: 10px;">
+                <span class="data-label">المهام المسندة:</span>
+                <span class="data-value" style="width: 100%;">
+                    <ol class="styled-list">
+                        <li>المحافظة على سلامة العلاقات الاجتماعية بين أعضاء الفريق الذكور.</li>
+                        <li>التواصل مع الأعضاء الذكور في الظروف الحرجة والداعمة.</li>
+                        <li>التعاون المستمر مع مسؤولي اللجان لمعرفة وحل المشاكل داخل الفريق.</li>
+                        <li>أحد مصممي الفريق.</li>
+                        <li>الإشراف في مناقشة فضاء.</li>
+                        <li>تطوير بوتات الفريق.</li>
+                        <li>تقييم الإجابات في لجنة التسجيل والانتساب.</li>
+                        <li>مهام مدير مشروع بوتات زيد كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
+                        <li>مهام مدير مشروع لأكون فصيحًا كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
+                    </ol>
+                </span>
+            </div>
+        </div>
 
-    <h2>متابعة الأداء</h2>
-    <table class="info-table">
-        <tr>
-            <td class="label">التقارير المقدّمة:</td>
-            <td class="value">0 تقارير</td>
-        </tr>
-        <tr>
-            <td class="label">نقاط العمل:</td>
-            <td class="value">
-                <strong>9 نقاط عمل</strong> واحصائياتها كالتالي:
-                <ul class="sub-list">
-                    <li>3 نقاط بمشروع الاختبارات.</li>
-                    <li>2 نقاط بمشروع فضاء أولى ثانوي.</li>
-                    <li>4 نقاط بمشروع فضاء ثانية ثانوي.</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">آخر تقييم إداري:</td>
-            <td class="value"><span style="color: #eab308;">⭐</span> (0/5) <span style="color: #94a3b8; font-style: italic;">(غير متوفر حاليًّا)</span></td>
-        </tr>
-    </table>
+        <!-- القسم الثالث: متابعة الأداء -->
+        <div class="section-title">متابعة الأداء</div>
+        <div class="data-card">
+            <div class="data-row">
+                <span class="data-label">التقارير المقدمة:</span>
+                <span class="data-value">0 تقارير</span>
+            </div>
+            <div class="data-row" style="flex-direction: column; gap: 8px;">
+                <span class="data-label">نقاط العمل:</span>
+                <span class="data-value" style="width: 100%;">
+                    <strong style="color: var(--primary-color);">9 نقاط عمل</strong> واحصائياتها كالتالي:
+                    <ul class="styled-list" style="list-style-type: circle; margin-top: 6px;">
+                        <li>3 نقاط بمشروع الاختبارات.</li>
+                        <li>2 نقاط بمشروع فضاء أولى ثانوي.</li>
+                        <li>4 نقاط بمشروع فضاء ثانية ثانوي.</li>
+                    </ul>
+                </span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">آخر تقييم إداري:</span>
+                <span class="data-value">
+                    <span style="color: #eab308;">⭐⭐⭐⭐⭐</span> (0/5) <span style="color: var(--text-muted); font-size: 8.5pt;">(غير متوفر حالياً)</span>
+                </span>
+            </div>
+        </div>
 
-    <h2>الملحوظات والمخالفات</h2>
-    <table class="info-table">
-        <tr>
-            <td class="label">الملحوظات الإدارية:</td>
-            <td class="value" style="color: #94a3b8; font-style: italic;">غير متوفر حاليًّا</td>
-        </tr>
-        <tr>
-            <td class="label">عدد التنبيهات:</td>
-            <td class="value">0 تنبيه</td>
-        </tr>
-        <tr>
-            <td class="label">عدد المخالفات:</td>
-            <td class="value">0 مخالفة</td>
-        </tr>
-    </table>
+        <!-- القسم الرابع: الملاحظات والمخالفات -->
+        <div class="section-title">الملحوظات والمخالفات</div>
+        <div class="data-card">
+            <div class="data-row">
+                <span class="data-label">الملاحظات:</span>
+                <span class="data-value" style="color: var(--text-muted); font-style: italic;">غير متوفر حالياً</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">التنبيهات:</span>
+                <span class="data-value">0 تنبيه</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">المخالفات:</span>
+                <span class="data-value">0 مخالفة</span>
+            </div>
+        </div>
 
-    <h2>معلومات إضافية</h2>
-    <table class="info-table">
-        <tr>
-            <td class="label">قدرات مميزة:</td>
-            <td class="value" style="padding: 10px 5px;">
-                <table class="columns-table">
-                    <tr>
-                        <td>
-                            <div class="skill-card">كاتب مبتدئ</div>
-                            <div class="skill-card">خبرة في التصميم</div>
-                            <div class="skill-card">متفاعل ومتواجد بشكل دائم</div>
-                            <div class="skill-card">خبرة واسعة في التيليجرام</div>
-                            <div class="skill-card">مبتكر ومبدع</div>
-                            <div class="skill-card">ناقد بناء</div>
-                            <div class="skill-card">صاحب أفكار مبتكرة</div>
-                        </td>
-                        <td>
-                            <div class="skill-card">حازم في القرارات</div>
-                            <div class="skill-card">صارم مع الأعضاء الجدد</div>
-                            <div class="skill-card">مطور بوتات مختلفة</div>
-                            <div class="skill-card">محرر للمحتوى</div>
-                            <div class="skill-card">يعمل تحت الضغط</div>
-                            <div class="skill-card">خبرة في إعداد النماذج والملفات</div>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">الأهداف داخل الفريق:</td>
-            <td class="value" style="color: #475569; font-style: italic;">بإمكان صاحب البيانات كتابة أهدافه وإرسالها على بوت بوتشن.</td>
-        </tr>
-    </table>
+        <!-- القسم الخامس: معلومات إضافية -->
+        <div class="section-title">معلومات إضافية وميزات</div>
+        <div class="data-card" style="padding: 15px 12px;">
+            <div style="font-weight: 700; color: var(--text-muted); font-size: 10pt; margin-bottom: 10px;">قدرات مميزة:</div>
+            <div class="skills-grid">
+                <div class="skill-item">كاتب مبتدئ</div>
+                <div class="skill-item">خبرة في التصميم</div>
+                <div class="skill-item">متفاعل دائم</div>
+                <div class="skill-item">خبرة بالتيليجرام</div>
+                <div class="skill-item">مبتكر ومبدع</div>
+                <div class="skill-item">ناقد بناء</div>
+                <div class="skill-item">أفكار مبتكرة</div>
+                <div class="skill-item">حازم بالقرارات</div>
+                <div class="skill-item">صارم مع الجدد</div>
+                <div class="skill-item">مطور بوتات</div>
+                <div class="skill-item">محرر محتوى</div>
+                <div class="skill-item">يعمل تحت الضغط</div>
+                <div class="skill-item">إعداد النماذج</div>
+            </div>
+            
+            <div style="border-top: 1px dashed var(--border-color); margin-top: 15px; padding-top: 10px;">
+                <div style="font-weight: 700; color: var(--text-muted); font-size: 10pt; margin-bottom: 5px;">الأهداف داخل الفريق:</div>
+                <div style="font-size: 9pt; color: var(--text-muted); font-style: italic; line-height: 1.4;">
+                    بإمكان صاحب البيانات كتابة أهدافه وإرسالها على بوت بوتشن.
+                </div>
+            </div>
+        </div>
 
-    <table class="footer-table">
-        <tr>
-            <td class="footer-meta">
-                <strong>آخر تحديث للبيانات:</strong> 1 يوليو 2026<br>
-                <span style="font-size: 8.5pt; color: #94a3b8;">لأي تعديل يُرجى التواصل مع الإدارة العامة.</span>
-            </td>
-            <td class="footer-signature">
-                <div class="signature-area">توقيع المدير</div>
-            </td>
-        </tr>
-    </table>
+        <!-- التذييل الرسمي والتوقيع -->
+        <div class="footer-section">
+            <div class="update-info">
+                <strong>آخر تحديث:</strong> 1 يوليو 2026<br>
+                <span>لأي تعديل يرجى مراجعة الإدارة العامة</span>
+            </div>
+            <div class="signature-container">
+                <div class="signature-line">توقيع المدير</div>
+            </div>
+        </div>
 
-    <div class="trial-text"> تجريبي للعلم</div>
+        <div class="demo-tag">ملف تجريبي </div>
+
+    </div>
 
 </body>
 </html>
