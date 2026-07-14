@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>بيانات النخبة | همام الكانمي</title>
     
+    <!-- استيراد مكتبة تيليجرام الرسمية لحل مشكلة الروابط والطباعة داخل التطبيق -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <!-- استيراد خط Cairo الاحترافي للويب -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +56,7 @@
             flex-direction: column;
         }
 
-        /* زر الطباعة العلوي */
+        /* زر الطباعة العلوي التفاعلي */
         .no-print-btn {
             background: var(--primary-grad);
             color: white;
@@ -317,8 +320,8 @@
 
     <div class="app-container">
         
-        <!-- زر يظهر بالمتصفح ويختفي بالـ PDF تلقائياً -->
-        <button class="no-print-btn" onclick="window.print()">
+        <!-- زر ذكي تفاعلي مبرمج للتعامل مع تيليجرام والمتصفحات العادية -->
+        <button class="no-print-btn" onclick="handlePrint()">
             🖨️ طباعة أو تحميل كـ PDF
         </button>
 
@@ -482,9 +485,29 @@
             </div>
         </div>
 
-        <div class="demo-tag">ملف تجريبي للعلم</div>
+        <div class="demo-tag">ملف تجريبي هم</div>
 
     </div>
+
+    <!-- جافا سكريبت الذكي لحل مشكلة متصفح تيليجرام -->
+    <script>
+        function handlePrint() {
+            // التحقق مما إذا كان الكود يعمل داخل بيئة تطبيق تيليجرام المصغر
+            if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.platform !== 'unknown') {
+                // فتح الصفحة الحالية مباشرة في المتصفح الخارجي للهاتف ليشتغل الـ PDF بنجاح
+                Telegram.WebApp.openLink(window.location.href);
+            } else {
+                // إذا كان مفتوحاً على متصفح عادي مثل Chrome أو Safari يطبع فوراً
+                window.print();
+            }
+        }
+        
+        // إخبار تيليجرام بأن التطبيق جاهز ومستقر
+        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            Telegram.WebApp.ready();
+            Telegram.WebApp.expand(); // توسيع التطبيق المصغر ليأخذ كامل مساحة الشاشة بشكل مريح
+        }
+    </script>
 
 </body>
 </html>
