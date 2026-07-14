@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة أعضاء فريق النخبة</title>
-    <!-- مكتبة تيليجرام للتطبيقات المصغرة -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -19,7 +18,7 @@
             --danger-color: #c62828;
         }
 
-        /* دعم الوضع الداكن تلقائياً */
+        /* دعم الوضع الداكن تلقائياً حسب نظام التليفون أو التيليجرام */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #0f172a;
@@ -76,25 +75,17 @@
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* الشعار الفخم */
-        .logo-emblem {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, var(--primary-color) 60%, var(--secondary-color));
-            border: 3px solid var(--gold-color);
-            border-radius: 50%;
-            margin: 0 auto 15px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        /* حاوي الشعار الحقيقي */
+        .logo-container {
+            text-align: center;
+            margin: 10px auto 20px auto;
         }
 
-        .logo-emblem span {
-            color: var(--gold-color);
-            font-size: 32px;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        .logo-img {
+            max-width: 110px;
+            height: auto;
+            border-radius: 12px;
+            object-fit: contain;
         }
 
         /* شاشة تسجيل الدخول */
@@ -188,11 +179,10 @@
 
         .header-band .team-subtitle {
             font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
             color: var(--gold-color);
             font-weight: bold;
             margin-bottom: 5px;
+            letter-spacing: 1px;
         }
 
         .header-band .main-title {
@@ -234,11 +224,6 @@
             width: 38%;
         }
 
-        .info-table td.value {
-            color: var(--text-color);
-        }
-
-        /* تنسيق النقاط والتقييم والمخالفات */
         .badge {
             display: inline-block;
             padding: 4px 8px;
@@ -293,14 +278,11 @@
         }
 
         .signature-img {
-            font-family: 'Courier New', Courier, monospace;
-            font-style: italic;
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 18px;
-            border-bottom: 1px dashed var(--border-color);
-            padding: 5px 10px;
-            display: inline-block;
+            max-width: 130px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 5px auto 0 auto;
         }
 
         .stamp-box {
@@ -316,7 +298,7 @@
             font-size: 9px;
             font-weight: bold;
             transform: rotate(-10deg);
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         .logout-btn {
@@ -330,23 +312,21 @@
 <body>
 
 <div class="container">
-    <!-- 1. شاشة التحميل الذكي -->
     <div id="loadingSection" class="loading-box">
         <div class="spinner"></div>
-        <p>جاري فحص وتأمين الهوية الرقمية عبر تيليجرام...</p>
+        <p>جاري فحص وتأمين الهوية الرقمية عبر الـ ID...</p>
     </div>
 
-    <!-- 2. شاشة تسجيل الدخول المطور -->
     <div id="loginSection" class="login-box">
-        <div class="logo-emblem">
-            <span>N</span>
+        <div class="logo-container">
+            <img src="logo.png" alt="شعار فريق النخبة" class="logo-img" onerror="this.style.display='none';">
         </div>
         <h2>بوابة النخبة</h2>
         <p>الاستعلام الآمن عن السجلات والملفات الإدارية</p>
         
         <div class="input-group">
-            <label for="username">اسم المستخدم (Telegram Username):</label>
-            <input type="text" id="username" placeholder="مثال: h1mm4" autocomplete="off">
+            <label for="userIdInput">الرقم التعريفي (Telegram ID):</label>
+            <input type="text" id="userIdInput" placeholder="مثال: 123456789" autocomplete="off" inputmode="numeric">
         </div>
         
         <div class="input-group">
@@ -358,14 +338,12 @@
         <div id="errorMsg" class="error-msg"></div>
     </div>
 
-    <!-- 3. شاشة ملف العضو الكاملة -->
     <div id="profileSection" class="profile-box">
         <div class="header-band">
             <div class="team-subtitle">الإدارة التنفيذية العامة</div>
             <div class="main-title">فريق النخبة</div>
         </div>
 
-        <!-- القسم الأول: الهوية الإدارية -->
         <div class="section-title">أولاً: الهوية الوظيفية والإدارية</div>
         <table class="info-table">
             <tr>
@@ -377,8 +355,8 @@
                 <td class="value" id="res-username" style="color: var(--primary-color); font-weight: bold;"></td>
             </tr>
             <tr>
-                <td class="label">الرقم التعريفي:</td>
-                <td class="value" id="res-id"></td>
+                <td class="label">الرقم التعريفي (ID):</td>
+                <td class="value" id="res-id" style="font-family: monospace; font-weight: bold;"></td>
             </tr>
             <tr>
                 <td class="label">الصفة / المنصب:</td>
@@ -394,7 +372,6 @@
             </tr>
         </table>
 
-        <!-- القسم الثاني: سجل العمل والالتزام -->
         <div class="section-title">ثانياً: سجل الأداء والالتزام</div>
         <table class="info-table">
             <tr>
@@ -423,7 +400,6 @@
             </tr>
         </table>
 
-        <!-- القسم الثالث: التواريخ والانتساب -->
         <div class="section-title">ثالثاً: تاريخ الانتساب وصلاحية الملف</div>
         <table class="info-table">
             <tr>
@@ -440,11 +416,9 @@
             </tr>
         </table>
 
-        <!-- القسم الرابع: القدرات -->
         <div class="section-title">رابعاً: القدرات والمهارات الشخصية</div>
         <div class="skills-container" id="res-skills"></div>
 
-        <!-- التوقيع الرسمي والشعار الأسفل -->
         <div class="document-footer">
             <div style="font-size: 11px; color: #777; text-align: center;">
                 صدرت هذه الوثيقة إلكترونياً وتعتبر معتمدة رسمياً من إدارة المنظومة.
@@ -452,16 +426,14 @@
             </div>
             
             <div class="signature-section">
-                <!-- ختم الإدارة -->
                 <div class="stamp-box">
                     <span>فريق النخبة</span>
                     <span>★★★★★</span>
                     <span>الإدارة العامة</span>
                 </div>
-                <!-- توقيع الإدارة -->
                 <div class="signature-box">
                     <div class="signature-title">اعتماد وتوقيع الإدارة</div>
-                    <div class="signature-img">Hamam Al-Kanmi</div>
+                    <img src="Signature.png" alt="توقيع الإدارة" class="signature-img" onerror="this.style.style.display='none';">
                 </div>
             </div>
         </div>
@@ -471,13 +443,13 @@
 </div>
 
 <script>
-    // قاعدة البيانات الكاملة لجميع الحقول والبيانات المطلوبة
+    // قاعدة البيانات مبنية ومربوطة بالـ Telegram ID توا
     const membersDatabase = [
         {
-            username: "h1mm4",
+            id: "123456789", // ⚠️ اسبدل هذا الرقم بـ ID التيليجرام الحقيقي الخاص بك ليتعرف عليك تلقائياً
             pin: "2026",
+            username: "h1mm4",
             name: "همام أحمد الكانمي",
-            id: "ELITE-001",
             title: "مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحاً.",
             grade: "القائد الأعلى / المؤسس العام",
             department: "الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحاً.",
@@ -494,10 +466,10 @@
             skills: ["كتابة إبداعية", "تطوير وإدارة البوتات", "إدارة وتنسيق الفرق الإدارية", "التصميم والإنتاج", "التفاعل الدائم والمستمر", "العمل الفعال تحت الضغط", "التحليل والنقد البناء"]
         },
         {
-            username: "elite_test",
+            id: "987654321", // ID العضو الوهمي للتجربة
             pin: "7788",
+            username: "elite_test",
             name: "أحمد بن علي (تجريبي)",
-            id: "ELITE-099",
             title: "عضو مشارك بقسم الميديا",
             grade: "إداري مشارك",
             department: "قسم التصميم والمونتاج",
@@ -509,58 +481,60 @@
             violations: "لا يوجد",
             joinDate: "10 يناير 2026",
             duration: "6 أشهر قيد التجديد",
-            notes: "عضو وهمي لغرض اختبار المنظومة وفحص حقول الأداء والدرجات الإدارية.",
+            notes: "عضو وهمي لغرض اختبار المنظومة وفحص حقول الأداء والدرجات الإدارية عبر الـ ID.",
             updateDate: "2026-07-14",
             skills: ["تصميم فوتوشوب", "مونتاج فيديو", "تنظيم ملفات ميديا"]
         }
     ];
 
-    // تفعيل وفحص التيليجرام
+    // بدء فحص الهوية عبر التيليجرام تلقائياً باستخدام الـ ID
     document.addEventListener("DOMContentLoaded", function() {
         if (window.Telegram && window.Telegram.WebApp) {
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
             
-            const tgUser = window.Telegram.WebApp.initDataUnsafe?.user?.username;
-            if (tgUser) {
-                const cleanTgUser = tgUser.trim().toLowerCase();
-                const foundUser = membersDatabase.find(m => m.username === cleanTgUser);
+            // التقاط الـ ID الحقيقي الخاص بحساب العضو من تيليجرام
+            const tgUserId = window.Telegram.WebApp.initDataUnsafe?.user?.id;
+            
+            if (tgUserId) {
+                const cleanId = String(tgUserId).trim();
+                // البحث في قاعدة البيانات بمطابقة الـ ID
+                const foundUser = membersDatabase.find(m => String(m.id) === cleanId);
                 if (foundUser) {
                     showProfile(foundUser);
-                    return;
+                    return; // دخول تلقائي آمن وناجح!
                 }
             }
         }
         
-        // الانتقال للواجهة اليدوية في حال عدم مطابقة التيليجرام
+        // إظهار الدخول اليدوي إذا فتح خارج تيليجرام أو لم يطابق الـ ID
         document.getElementById('loadingSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'block';
     });
 
-    // تسجيل الدخول اليدوي
+    // تسجيل الدخول اليدوي بالـ ID والرمز
     function manualLogin() {
-        const userInput = document.getElementById('username').value.trim().toLowerCase();
+        const idInput = document.getElementById('userIdInput').value.trim();
         const pinInput = document.getElementById('pin').value.trim();
         const errorMsg = document.getElementById('errorMsg');
 
-        const user = membersDatabase.find(m => m.username === userInput && m.pin === pinInput);
+        const user = membersDatabase.find(m => String(m.id) === idInput && m.pin === pinInput);
 
         if (user) {
             errorMsg.style.display = 'none';
             showProfile(user);
         } else {
-            errorMsg.innerText = 'البيانات غير متطابقة! يرجى التحقق من اليوزر والرمز السري.';
+            errorMsg.innerText = 'الرقم التعريفي (ID) أو الرمز السري غير صحيح!';
             errorMsg.style.display = 'block';
         }
     }
 
-    // عرض وتعبئة كل حقول الملف الإداري
+    // دالة عرض وتعبئة الملف الشخصي
     function showProfile(user) {
         document.getElementById('loadingSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('profileSection').style.display = 'block';
 
-        // تعبئة البيانات
         document.getElementById('res-name').innerText = user.name;
         document.getElementById('res-username').innerText = '@' + user.username.toUpperCase();
         document.getElementById('res-id').innerText = user.id;
@@ -578,7 +552,6 @@
         document.getElementById('res-notes').innerText = user.notes;
         document.getElementById('res-updateDate').innerText = user.updateDate;
 
-        // مهارات العضو كـ تاغات
         const skillsDiv = document.getElementById('res-skills');
         skillsDiv.innerHTML = '';
         user.skills.forEach(skill => {
@@ -589,9 +562,9 @@
         });
     }
 
-    // تسجيل الخروج الآمن
+    // تسجيل الخروج
     function logout() {
-        document.getElementById('username').value = '';
+        document.getElementById('userIdInput').value = '';
         document.getElementById('pin').value = '';
         document.getElementById('profileSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'block';
