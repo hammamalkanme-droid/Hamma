@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>بطاقة العضو – ملف البيانات الشخصي</title>
+<style>
+    @page {
+        size: A4;
+        margin: 20mm 15mm;
+        background-color: #ffffff;
+        @bottom-left {
+            content: "صفحة " counter(page) " من " counter(pages);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 9pt;
+            color: #94a3b8;
+        }
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        color: #1e293b; line-height: 1.6;
+        background-color: #ffffff;
+    }
+    .header-table {
+        width: 100%; border-collapse: collapse;
+        margin-bottom: 25px; border-bottom: 3px solid #0f766e;
+    }
+    .header-title { vertical-align: middle; text-align: right; padding-bottom: 15px; }
+    .header-title h1 { margin: 0; font-size: 20pt; color: #0f766e; font-weight: bold; }
+    .header-title p { margin: 6px 0 0 0; font-size: 13pt; color: #475569; font-weight: 600; }
+    .header-logo { vertical-align: middle; text-align: left; width: 150px; padding-bottom: 15px; }
+    .logo-box {
+        border: 2px dashed #cbd5e1; border-radius: 6px;
+        height: 75px; width: 140px; text-align: center;
+        background-color: #f8fafc; padding-top: 25px;
+        color: #94a3b8; font-size: 9pt; font-weight: bold;
+    }
+    h2 {
+        font-size: 13pt; color: #ffffff; background-color: #0f766e;
+        margin-top: 20px; margin-bottom: 12px; padding: 6px 12px;
+        border-radius: 4px; page-break-after: avoid;
+    }
+    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; page-break-inside: avoid; }
+    .info-table td { padding: 8px 12px; border: 1px solid #e2e8f0; font-size: 10.5pt; vertical-align: top; }
+    .info-table .label { font-weight: bold; color: #334155; width: 22%; background-color: #f8fafc; }
+    .info-table .value { color: #0f172a; width: 78%; }
+    .badge { display: inline-block; background-color: #dcfce7; color: #16a34a; padding: 1px 8px; border-radius: 4px; font-weight: bold; font-size: 9.5pt; }
+    ol, ul { margin: 0; padding-right: 20px; }
+    li { margin-bottom: 5px; font-size: 10.5pt; }
+    .sub-list { margin-top: 5px; list-style-type: square; }
+    .columns-table { width: 100%; border-collapse: collapse; page-break-inside: avoid; }
+    .columns-table td { width: 50%; vertical-align: top; padding: 0 0 0 10px; }
+    .columns-table td:last-child { padding: 0 10px 0 0; }
+    .skill-card { background-color: #f1f5f9; padding: 6px 12px; margin-bottom: 6px; border-radius: 4px; font-size: 10pt; border-right: 3px solid #0f766e; }
+    .footer-table { width: 100%; border-collapse: collapse; margin-top: 35px; page-break-inside: avoid; }
+    .footer-meta { text-align: right; font-size: 9.5pt; color: #64748b; vertical-align: bottom; padding-bottom: 10px; }
+    .footer-signature { text-align: left; vertical-align: bottom; width: 220px; }
+    .signature-area { border-top: 1px solid #475569; margin-top: 60px; text-align: center; padding-top: 8px; font-weight: bold; font-size: 11pt; color: #1e293b; }
+    .trial-text { text-align: center; font-size: 9pt; color: #cbd5e1; margin-top: 25px; font-style: italic; }
+</style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td class="header-title">
+                <p>الإدارة العامة</p>
+                <h1>فريق النخبة</h1>
+            </td>
+            <td class="header-logo">
+                <div class="logo-box">شعار النخبة</div>
+            </td>
+        </tr>
+    </table>
+
+    <h2>بطاقة العضو – ملف البيانات الشخصي</h2>
+    <table class="info-table">
+        <tr>
+            <td class="label">الاسم الثنائي:</td>
+            <td class="value" style="font-weight: bold; color: #0f766e; font-size: 11.5pt;">همام الكانمي</td>
+        </tr>
+        <tr>
+            <td class="label">المعرف في تيليجرام:</td>
+            <td class="value" dir="ltr" style="text-align: right;">@H1MM4</td>
+        </tr>
+        <tr>
+            <td class="label">الصفة:</td>
+            <td class="value">مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحًا.</td>
+        </tr>
+        <tr>
+            <td class="label">الرقم التعريفي:</td>
+            <td class="value" style="color: #94a3b8; font-style: italic;">غير متوفر حاليًا</td>
+        </tr>
+        <tr>
+            <td class="label">القسم / اللجنة:</td>
+            <td class="value">الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحًا.</td>
+        </tr>
+        <tr>
+            <td class="label">تاريخ الانضمام:</td>
+            <td class="value">٢٦ مارس ٢٠٢٤</td>
+        </tr>
+        <tr>
+            <td class="label">مدة العضوية الحالية:</td>
+            <td class="value">غير محدود</td>
+        </tr>
+        <tr>
+            <td class="label">العضوية:</td>
+            <td class="value"><span class="badge">🔹 فعالة</span></td>
+        </tr>
+    </table>
+
+    <h2>البيانات الإدارية والعملية</h2>
+    <table class="info-table">
+        <tr>
+            <td class="label">الدرجة الوظيفية:</td>
+            <td class="value">المدير التنفيذي، مدير مشروع، مسؤول لجنة.</td>
+        </tr>
+        <tr>
+            <td class="label">الصلاحيات الحالية:</td>
+            <td class="value">جميع الصلاحيات المسموح بها للإدارة العامة بعد أخذ رأي أعضاء الإدارة.</td>
+        </tr>
+        <tr>
+            <td class="label">المهام المسندة:</td>
+            <td class="value">
+                <ol>
+                    <li>المحافظة على سلامة العلاقات الاجتماعية بين أعضاء الفريق الذكور.</li>
+                    <li>التواصل مع الأعضاء الذكور في الظروف الحرجة والداعمة.</li>
+                    <li>التعاون المستمر مع مسؤولي اللجان لمعرفة وحل المشاكل التي قد تحدث داخل الفريق.</li>
+                    <li>أحد مصممي الفريق.</li>
+                    <li>الإشراف في مناقشة فضاء.</li>
+                    <li>تطوير بوتات الفريق.</li>
+                    <li>تقييم الإجابات في لجنة التسجيل والانتساب.</li>
+                    <li>مهام مدير مشروع بوتات زيد كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
+                    <li>مهام مدير مشروع لأكون فصيحًا كتنفيذ الخطط والأوامر ورفع تقاريره.</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <h2>متابعة الأداء</h2>
+    <table class="info-table">
+        <tr>
+            <td class="label">التقارير المقدّمة:</td>
+            <td class="value">0 تقارير</td>
+        </tr>
+        <tr>
+            <td class="label">نقاط العمل:</td>
+            <td class="value">
+                <strong>9 نقاط عمل</strong> واحصائياتها كالتالي:
+                <ul class="sub-list">
+                    <li>3 نقاط بمشروع الاختبارات.</li>
+                    <li>2 نقاط بمشروع فضاء أولى ثانوي.</li>
+                    <li>4 نقاط بمشروع فضاء ثانية ثانوي.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">آخر تقييم إداري:</td>
+            <td class="value"><span style="color: #eab308;">⭐</span> (0/5) <span style="color: #94a3b8; font-style: italic;">(غير متوفر حاليًّا)</span></td>
+        </tr>
+    </table>
+
+    <h2>الملحوظات والمخالفات</h2>
+    <table class="info-table">
+        <tr>
+            <td class="label">الملحوظات الإدارية:</td>
+            <td class="value" style="color: #94a3b8; font-style: italic;">غير متوفر حاليًّا</td>
+        </tr>
+        <tr>
+            <td class="label">عدد التنبيهات:</td>
+            <td class="value">0 تنبيه</td>
+        </tr>
+        <tr>
+            <td class="label">عدد المخالفات:</td>
+            <td class="value">0 مخالفة</td>
+        </tr>
+    </table>
+
+    <h2>معلومات إضافية</h2>
+    <table class="info-table">
+        <tr>
+            <td class="label">قدرات مميزة:</td>
+            <td class="value" style="padding: 10px 5px;">
+                <table class="columns-table">
+                    <tr>
+                        <td>
+                            <div class="skill-card">كاتب مبتدئ</div>
+                            <div class="skill-card">خبرة في التصميم</div>
+                            <div class="skill-card">متفاعل ومتواجد بشكل دائم</div>
+                            <div class="skill-card">خبرة واسعة في التيليجرام</div>
+                            <div class="skill-card">مبتكر ومبدع</div>
+                            <div class="skill-card">ناقد بناء</div>
+                            <div class="skill-card">صاحب أفكار مبتكرة</div>
+                        </td>
+                        <td>
+                            <div class="skill-card">حازم في القرارات</div>
+                            <div class="skill-card">صارم مع الأعضاء الجدد</div>
+                            <div class="skill-card">مطور بوتات مختلفة</div>
+                            <div class="skill-card">محرر للمحتوى</div>
+                            <div class="skill-card">يعمل تحت الضغط</div>
+                            <div class="skill-card">خبرة في إعداد النماذج والملفات</div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">الأهداف داخل الفريق:</td>
+            <td class="value" style="color: #475569; font-style: italic;">بإمكان صاحب البيانات كتابة أهدافه وإرسالها على بوت بوتشن.</td>
+        </tr>
+    </table>
+
+    <table class="footer-table">
+        <tr>
+            <td class="footer-meta">
+                <strong>آخر تحديث للبيانات:</strong> 1 يوليو 2026<br>
+                <span style="font-size: 8.5pt; color: #94a3b8;">لأي تعديل يُرجى التواصل مع الإدارة العامة.</span>
+            </td>
+            <td class="footer-signature">
+                <div class="signature-area">توقيع المدير</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="trial-text"> تجريبي للعلم</div>
+
+</body>
+</html>
