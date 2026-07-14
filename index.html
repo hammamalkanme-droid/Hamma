@@ -4,30 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة أعضاء فريق النخبة</title>
+    <!-- مكتبة تيليجرام للتطبيقات المصغرة -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-color: #2d7a6f;
-            --secondary-color: #1f524a;
-            --bg-color: #f4f7f6;
+            --primary-color: #1e5e54;
+            --secondary-color: #133c36;
+            --gold-color: #d4af37;
+            --bg-color: #f3f6f5;
             --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-color: #e0e0e0;
+            --text-color: #2b2b2b;
+            --border-color: #e2e8f0;
+            --success-color: #2e7d32;
+            --danger-color: #c62828;
         }
 
-        /* تحسين الألوان لو المستخدم مشغل الوضع الداكن في تيليجرام */
+        /* دعم الوضع الداكن تلقائياً */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #182533;
-                --card-bg: #223140;
-                --text-color: #f5f5f5;
-                --border-color: #2b394a;
-                --primary-color: #64b5a6;
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --text-color: #f1f5f9;
+                --border-color: #334155;
+                --primary-color: #2dd4bf;
+                --secondary-color: #14b8a6;
             }
         }
 
         * {
-            box-shadow: none;
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -46,121 +50,171 @@
 
         .container {
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             background: var(--card-bg);
-            border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             overflow: hidden;
             border: 1px solid var(--border-color);
         }
 
-        /* حالة التحميل التلقائي */
+        /* شاشة الانتظار */
         .loading-box {
-            padding: 40px;
+            padding: 50px 20px;
             text-align: center;
-            display: block;
         }
 
         .spinner {
             border: 4px solid rgba(0,0,0,0.1);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border-left-color: var(--primary-color);
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 20px auto;
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* الشعار الفخم */
+        .logo-emblem {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--primary-color) 60%, var(--secondary-color));
+            border: 3px solid var(--gold-color);
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo-emblem span {
+            color: var(--gold-color);
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
         /* شاشة تسجيل الدخول */
         .login-box {
-            padding: 30px 20px;
+            padding: 35px 25px;
             text-align: center;
             display: none;
         }
 
         .login-box h2 {
             color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 24px;
+            margin-bottom: 8px;
+            font-size: 26px;
+            font-weight: 800;
         }
 
         .login-box p {
-            color: #888;
+            color: #666;
             font-size: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: right;
         }
 
         .input-group label {
             display: block;
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 6px;
             color: var(--primary-color);
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
             outline: none;
             font-size: 16px;
             text-align: center;
             background: transparent;
             color: var(--text-color);
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
         }
 
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(45, 122, 111, 0.2);
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
         }
 
         .error-msg {
-            color: #d9534f;
+            color: var(--danger-color);
             font-size: 14px;
             margin-top: 15px;
             display: none;
+            font-weight: 600;
         }
 
-        /* شاشة ملف العضو */
+        /* ملف العضو الشخصي */
         .profile-box {
             display: none;
         }
 
         .header-band {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
+            border-bottom: 4px solid var(--gold-color);
+        }
+
+        .header-band .team-subtitle {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold-color);
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
         .header-band .main-title {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 24px;
+            font-weight: 800;
         }
 
         .section-title {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            opacity: 0.9;
+            background-color: #f1f5f9;
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 800;
+            border-bottom: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .section-title {
+                background-color: #334155;
+                color: var(--primary-color);
+            }
         }
 
         .info-table {
@@ -169,166 +223,321 @@
         }
 
         .info-table td {
-            padding: 12px 15px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .info-table td.label {
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary-color);
-            width: 35%;
+            width: 38%;
         }
 
+        .info-table td.value {
+            color: var(--text-color);
+        }
+
+        /* تنسيق النقاط والتقييم والمخالفات */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .badge-success { background-color: rgba(46, 125, 50, 0.15); color: var(--success-color); }
+        .badge-danger { background-color: rgba(198, 40, 40, 0.15); color: var(--danger-color); }
+        .badge-gold { background-color: rgba(212, 175, 55, 0.15); color: #b28900; }
+
         .skills-container {
-            padding: 15px;
+            padding: 15px 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
 
         .skill-tag {
-            background-color: rgba(45, 122, 111, 0.1);
+            background-color: rgba(30, 94, 84, 0.08);
             color: var(--primary-color);
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 13px;
-            font-weight: 600;
-            border: 1px solid rgba(45, 122, 111, 0.2);
+            font-weight: 700;
+            border: 1px solid rgba(30, 94, 84, 0.15);
         }
 
-        .footer-note {
-            padding: 15px;
-            font-size: 12px;
-            color: #888;
+        /* ذيل الورقة والتوقيع */
+        .document-footer {
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.01);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .signature-box {
             text-align: center;
-            background: rgba(0,0,0,0.02);
+        }
+
+        .signature-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .signature-img {
+            font-family: 'Courier New', Courier, monospace;
+            font-style: italic;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 18px;
+            border-bottom: 1px dashed var(--border-color);
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        .stamp-box {
+            width: 75px;
+            height: 75px;
+            border: 2px dashed var(--gold-color);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--gold-color);
+            font-size: 9px;
+            font-weight: bold;
+            transform: rotate(-10deg);
+            opacity: 0.8;
         }
 
         .logout-btn {
-            background: #d9534f;
-            margin: 15px;
-            width: calc(100% - 30px);
+            background: var(--danger-color);
+            margin: 20px;
+            width: calc(100% - 40px);
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- 1. شاشة التحميل الذكي -->
     <div id="loadingSection" class="loading-box">
         <div class="spinner"></div>
-        <p>جاري التحقق من الهوية الرقمية عبر تيليجرام...</p>
+        <p>جاري فحص وتأمين الهوية الرقمية عبر تيليجرام...</p>
     </div>
 
+    <!-- 2. شاشة تسجيل الدخول المطور -->
     <div id="loginSection" class="login-box">
-        <h2>فريق النخبة</h2>
-        <p>بوابة الاستعلام عن ملفات الأعضاء الشخصية</p>
+        <div class="logo-emblem">
+            <span>N</span>
+        </div>
+        <h2>بوابة النخبة</h2>
+        <p>الاستعلام الآمن عن السجلات والملفات الإدارية</p>
         
         <div class="input-group">
-            <label for="username">اسم المستخدم (بدون @):</label>
+            <label for="username">اسم المستخدم (Telegram Username):</label>
             <input type="text" id="username" placeholder="مثال: h1mm4" autocomplete="off">
         </div>
         
         <div class="input-group">
-            <label for="pin">الرمز السري:</label>
+            <label for="pin">الرمز السري الخاص بك:</label>
             <input type="password" id="pin" placeholder="••••" inputmode="numeric">
         </div>
         
-        <button class="btn" onclick="manualLogin()">تسجيل الدخول</button>
+        <button class="btn" onclick="manualLogin()">تسجيل الدخول الآمن</button>
         <div id="errorMsg" class="error-msg"></div>
     </div>
 
+    <!-- 3. شاشة ملف العضو الكاملة -->
     <div id="profileSection" class="profile-box">
         <div class="header-band">
-            <div style="font-size: 12px; opacity: 0.8;">الإدارة العامة</div>
+            <div class="team-subtitle">الإدارة التنفيذية العامة</div>
             <div class="main-title">فريق النخبة</div>
         </div>
 
-        <div class="section-title">بطاقة العضو التعريفية</div>
+        <!-- القسم الأول: الهوية الإدارية -->
+        <div class="section-title">أولاً: الهوية الوظيفية والإدارية</div>
         <table class="info-table">
             <tr>
-                <td class="label">الاسم الثنائي:</td>
-                <td id="res-name"></td>
+                <td class="label">اسم العضو:</td>
+                <td class="value" id="res-name" style="font-weight: bold;"></td>
             </tr>
             <tr>
-                <td class="label">المعرف:</td>
-                <td id="res-username" style="font-weight: bold;"></td>
+                <td class="label">المعرف الشخصي:</td>
+                <td class="value" id="res-username" style="color: var(--primary-color); font-weight: bold;"></td>
             </tr>
             <tr>
-                <td class="label">الصفة والمناصب:</td>
-                <td id="res-title"></td>
+                <td class="label">الرقم التعريفي:</td>
+                <td class="value" id="res-id"></td>
+            </tr>
+            <tr>
+                <td class="label">الصفة / المنصب:</td>
+                <td class="value" id="res-title"></td>
+            </tr>
+            <tr>
+                <td class="label">الدرجة الوظيفية:</td>
+                <td class="value" id="res-grade"></td>
             </tr>
             <tr>
                 <td class="label">اللجان والملفات:</td>
-                <td id="res-department"></td>
-            </tr>
-            <tr>
-                <td class="label">تاريخ الانضمام:</td>
-                <td id="res-joinDate"></td>
+                <td class="value" id="res-department"></td>
             </tr>
         </table>
 
-        <div class="section-title">القدرات والمهارات الشخصية</div>
+        <!-- القسم الثاني: سجل العمل والالتزام -->
+        <div class="section-title">ثانياً: سجل الأداء والالتزام</div>
+        <table class="info-table">
+            <tr>
+                <td class="label">النقاط التراكمية:</td>
+                <td class="value"><span class="badge badge-gold" id="res-points"></span></td>
+            </tr>
+            <tr>
+                <td class="label">التقييم العام:</td>
+                <td class="value"><span class="badge badge-success" id="res-evaluation"></span></td>
+            </tr>
+            <tr>
+                <td class="label">الصلاحيات الممنوحة:</td>
+                <td class="value" id="res-permissions"></td>
+            </tr>
+            <tr>
+                <td class="label">المهام الأساسية:</td>
+                <td class="value" id="res-duties"></td>
+            </tr>
+            <tr>
+                <td class="label">التنبيهات الإدارية:</td>
+                <td class="value" id="res-warnings"></td>
+            </tr>
+            <tr>
+                <td class="label">المخالفات المسجلة:</td>
+                <td class="value" id="res-violations"></td>
+            </tr>
+        </table>
+
+        <!-- القسم الثالث: التواريخ والانتساب -->
+        <div class="section-title">ثالثاً: تاريخ الانتساب وصلاحية الملف</div>
+        <table class="info-table">
+            <tr>
+                <td class="label">تاريخ الانضمام:</td>
+                <td class="value" id="res-joinDate"></td>
+            </tr>
+            <tr>
+                <td class="label">مدة العضوية:</td>
+                <td class="value" id="res-duration"></td>
+            </tr>
+            <tr>
+                <td class="label">ملاحظات الإدارة:</td>
+                <td class="value" id="res-notes" style="font-style: italic; font-size: 13px;"></td>
+            </tr>
+        </table>
+
+        <!-- القسم الرابع: القدرات -->
+        <div class="section-title">رابعاً: القدرات والمهارات الشخصية</div>
         <div class="skills-container" id="res-skills"></div>
 
-        <div class="footer-note">
-            منظومة النخبة الرقمية الآمنة 2026
+        <!-- التوقيع الرسمي والشعار الأسفل -->
+        <div class="document-footer">
+            <div style="font-size: 11px; color: #777; text-align: center;">
+                صدرت هذه الوثيقة إلكترونياً وتعتبر معتمدة رسمياً من إدارة المنظومة.
+                <br>تاريخ التحديث: <span id="res-updateDate"></span>
+            </div>
+            
+            <div class="signature-section">
+                <!-- ختم الإدارة -->
+                <div class="stamp-box">
+                    <span>فريق النخبة</span>
+                    <span>★★★★★</span>
+                    <span>الإدارة العامة</span>
+                </div>
+                <!-- توقيع الإدارة -->
+                <div class="signature-box">
+                    <div class="signature-title">اعتماد وتوقيع الإدارة</div>
+                    <div class="signature-img">Hamam Al-Kanmi</div>
+                </div>
+            </div>
         </div>
 
-        <button class="btn logout-btn" onclick="logout()">تسجيل الخروج</button>
+        <button class="btn logout-btn" onclick="logout()">إغلاق الجلسة الآمنة</button>
     </div>
 </div>
 
 <script>
-    // قاعدة البيانات المدمجة (بياناتك الحقيقية + حساب وهمي للتجربة)
+    // قاعدة البيانات الكاملة لجميع الحقول والبيانات المطلوبة
     const membersDatabase = [
         {
             username: "h1mm4",
             pin: "2026",
             name: "همام أحمد الكانمي",
+            id: "ELITE-001",
             title: "مؤسس الفريق، مدير الفريق، رئيس مشروع بوتات زيد، مسؤول العلاقات للرجال، مدير مشروع لأكون فصيحاً.",
+            grade: "القائد الأعلى / المؤسس العام",
             department: "الإدارة العامة، قسم التسجيل والانتساب، قسم مشروع فضاء، لجنة مشروع بوتات زيد، اللجنة التنظيمية، لجنة الإشراف، مشروع لأكون فصيحاً.",
+            points: "1500 نقطة قيادية",
+            evaluation: "10/10 (ممتاز جداً)",
+            permissions: "صلاحيات كاملة غير محدودة (Super Admin)",
+            duties: "الإشراف الكامل والتنظيمي على مشاريع النخبة الرقمية والتعليمية وتوجيه الإداريين والأعضاء.",
+            warnings: "لا يوجد (سجل مشرف)",
+            violations: "لا يوجد (سجل مشرف)",
             joinDate: "26 مارس 2024",
-            skills: ["كاتب مبتدئ", "خبرة في التصميم", "متفاعل بشكل دائم", "خبرة واسعة في التيليجرام", "مطور بوتات", "يعمل تحت الضغط", "إعداد النماذج والملفات"]
+            duration: "مستمر (دائم)",
+            notes: "مؤسس وباني حجر الأساس لفريق النخبة ومطور أدواتنا البرمجية المبتكرة.",
+            updateDate: "2026-07-14",
+            skills: ["كتابة إبداعية", "تطوير وإدارة البوتات", "إدارة وتنسيق الفرق الإدارية", "التصميم والإنتاج", "التفاعل الدائم والمستمر", "العمل الفعال تحت الضغط", "التحليل والنقد البناء"]
         },
         {
             username: "elite_test",
             pin: "7788",
-            name: "عضو تجريبي وهمي",
-            title: "نائب مسؤول قسم التصميم",
-            department: "اللجنة الفنية، قسم الميديا والتصميم",
-            joinDate: "1 يناير 2026",
-            skills: ["تصميم فوتوشوب", "تنسيق ألوان", "مونتاج سريع"]
+            name: "أحمد بن علي (تجريبي)",
+            id: "ELITE-099",
+            title: "عضو مشارك بقسم الميديا",
+            grade: "إداري مشارك",
+            department: "قسم التصميم والمونتاج",
+            points: "120 نقطة",
+            evaluation: "8.5/10 (جيد جداً)",
+            permissions: "صلاحيات النشر والتعديل الفني فقط",
+            duties: "إنتاج الصور والمحتوى المرئي للمنصات الإرشادية.",
+            warnings: "لا يوجد",
+            violations: "لا يوجد",
+            joinDate: "10 يناير 2026",
+            duration: "6 أشهر قيد التجديد",
+            notes: "عضو وهمي لغرض اختبار المنظومة وفحص حقول الأداء والدرجات الإدارية.",
+            updateDate: "2026-07-14",
+            skills: ["تصميم فوتوشوب", "مونتاج فيديو", "تنظيم ملفات ميديا"]
         }
     ];
 
-    // بدء تشغيل وتجهيز التطبيق المصغر
+    // تفعيل وفحص التيليجرام
     document.addEventListener("DOMContentLoaded", function() {
         if (window.Telegram && window.Telegram.WebApp) {
             window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand(); // تمديد التطبيق ليأخذ الشاشة كاملة
+            window.Telegram.WebApp.expand();
             
-            // محاولة التقاط اسم المستخدم تلقائياً من التيليجرام
             const tgUser = window.Telegram.WebApp.initDataUnsafe?.user?.username;
-            
             if (tgUser) {
                 const cleanTgUser = tgUser.trim().toLowerCase();
-                // البحث في قاعدة البيانات إذا كان اليوزر مسجل لتسجيل دخوله تلقائياً
                 const foundUser = membersDatabase.find(m => m.username === cleanTgUser);
-                
                 if (foundUser) {
                     showProfile(foundUser);
-                    return; // تسجيل دخول تلقائي ناجح!
+                    return;
                 }
             }
         }
         
-        // إذا فشل التعرف التلقائي أو فتح من متصفح عادي، اظهر شاشة الدخول اليدوي
+        // الانتقال للواجهة اليدوية في حال عدم مطابقة التيليجرام
         document.getElementById('loadingSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'block';
     });
 
-    // تسجيل الدخول اليدوي باليوزر والرمز
+    // تسجيل الدخول اليدوي
     function manualLogin() {
         const userInput = document.getElementById('username').value.trim().toLowerCase();
         const pinInput = document.getElementById('pin').value.trim();
@@ -340,23 +549,36 @@
             errorMsg.style.display = 'none';
             showProfile(user);
         } else {
-            errorMsg.innerText = 'اسم المستخدم أو الرمز السري غير صحيح!';
+            errorMsg.innerText = 'البيانات غير متطابقة! يرجى التحقق من اليوزر والرمز السري.';
             errorMsg.style.display = 'block';
         }
     }
 
-    // دالة عرض الملف الشخصي وتعبئة البيانات
+    // عرض وتعبئة كل حقول الملف الإداري
     function showProfile(user) {
         document.getElementById('loadingSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('profileSection').style.display = 'block';
 
+        // تعبئة البيانات
         document.getElementById('res-name').innerText = user.name;
         document.getElementById('res-username').innerText = '@' + user.username.toUpperCase();
+        document.getElementById('res-id').innerText = user.id;
         document.getElementById('res-title').innerText = user.title;
+        document.getElementById('res-grade').innerText = user.grade;
         document.getElementById('res-department').innerText = user.department;
+        document.getElementById('res-points').innerText = user.points;
+        document.getElementById('res-evaluation').innerText = user.evaluation;
+        document.getElementById('res-permissions').innerText = user.permissions;
+        document.getElementById('res-duties').innerText = user.duties;
+        document.getElementById('res-warnings').innerText = user.warnings;
+        document.getElementById('res-violations').innerText = user.violations;
         document.getElementById('res-joinDate').innerText = user.joinDate;
+        document.getElementById('res-duration').innerText = user.duration;
+        document.getElementById('res-notes').innerText = user.notes;
+        document.getElementById('res-updateDate').innerText = user.updateDate;
 
+        // مهارات العضو كـ تاغات
         const skillsDiv = document.getElementById('res-skills');
         skillsDiv.innerHTML = '';
         user.skills.forEach(skill => {
@@ -367,7 +589,7 @@
         });
     }
 
-    // تسجيل الخروج والعودة للشاشة اليدوية
+    // تسجيل الخروج الآمن
     function logout() {
         document.getElementById('username').value = '';
         document.getElementById('pin').value = '';
