@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة أعضاء فريق النخبة</title>
+    <!-- مكتبة تيليجرام للتطبيقات المصغرة -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -75,7 +76,7 @@
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* حاوي الشعار الحقيقي */
+        /* الشعار في شاشة الدخول */
         .logo-container {
             text-align: center;
             margin: 10px auto 20px auto;
@@ -86,6 +87,19 @@
             height: auto;
             border-radius: 12px;
             object-fit: contain;
+        }
+
+        /* الشعار داخل الملف الشخصي */
+        .profile-logo {
+            max-width: 85px;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid var(--gold-color);
+            background: #ffffff;
+            padding: 4px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: inline-block;
         }
 
         /* شاشة تسجيل الدخول */
@@ -312,16 +326,19 @@
 <body>
 
 <div class="container">
+    <!-- 1. شاشة التحميل وفحص الـ Telegram ID تلقائياً -->
     <div id="loadingSection" class="loading-box">
         <div class="spinner"></div>
         <p>جاري فحص وتأمين الهوية الرقمية عبر الـ ID...</p>
     </div>
 
+    <!-- 2. شاشة تسجيل الدخول المطور يدوياً -->
     <div id="loginSection" class="login-box">
         <div class="logo-container">
+            <!-- استدعاء ملف الشعار الحقيقي المرفوع -->
             <img src="logo.png" alt="شعار فريق النخبة" class="logo-img" onerror="this.style.display='none';">
         </div>
-        <h2>بوابة النخبة</h2>
+        <h2>بوابة فريق النخبة</h2>
         <p>الاستعلام الآمن عن السجلات والملفات الإدارية</p>
         
         <div class="input-group">
@@ -338,12 +355,16 @@
         <div id="errorMsg" class="error-msg"></div>
     </div>
 
+    <!-- 3. شاشة ملف العضو الكاملة -->
     <div id="profileSection" class="profile-box">
         <div class="header-band">
+            <!-- 🌟 تم إضافة الشعار هنا ليعرض داخل البطاقة فخامة مظهرها -->
+            <img src="logo.png" alt="شعار فريق النخبة" class="profile-logo" onerror="this.style.display='none';">
             <div class="team-subtitle">الإدارة التنفيذية العامة</div>
             <div class="main-title">فريق النخبة</div>
         </div>
 
+        <!-- القسم الأول: الهوية الإدارية -->
         <div class="section-title">أولاً: الهوية الوظيفية والإدارية</div>
         <table class="info-table">
             <tr>
@@ -372,6 +393,7 @@
             </tr>
         </table>
 
+        <!-- القسم الثاني: سجل العمل والالتزام -->
         <div class="section-title">ثانياً: سجل الأداء والالتزام</div>
         <table class="info-table">
             <tr>
@@ -400,6 +422,7 @@
             </tr>
         </table>
 
+        <!-- القسم الثالث: تاريخ الانتساب وصلاحية الملف -->
         <div class="section-title">ثالثاً: تاريخ الانتساب وصلاحية الملف</div>
         <table class="info-table">
             <tr>
@@ -416,9 +439,11 @@
             </tr>
         </table>
 
+        <!-- القسم الرابع: القدرات -->
         <div class="section-title">رابعاً: القدرات والمهارات الشخصية</div>
         <div class="skills-container" id="res-skills"></div>
 
+        <!-- التوقيع الرسمي والشعار الأسفل -->
         <div class="document-footer">
             <div style="font-size: 11px; color: #777; text-align: center;">
                 صدرت هذه الوثيقة إلكترونياً وتعتبر معتمدة رسمياً من إدارة المنظومة.
@@ -426,14 +451,16 @@
             </div>
             
             <div class="signature-section">
+                <!-- ختم الإدارة -->
                 <div class="stamp-box">
                     <span>فريق النخبة</span>
                     <span>★★★★★</span>
                     <span>الإدارة العامة</span>
                 </div>
+                <!-- 🌟 تم تصحيح الكود البرمجي هنا واستدعاء توقيع الإدارة الحقيقي -->
                 <div class="signature-box">
                     <div class="signature-title">اعتماد وتوقيع الإدارة</div>
-                    <img src="Signature.png" alt="توقيع الإدارة" class="signature-img" onerror="this.style.style.display='none';">
+                    <img src="Signature.png" alt="توقيع الإدارة" class="signature-img" onerror="this.style.display='none';">
                 </div>
             </div>
         </div>
@@ -443,7 +470,7 @@
 </div>
 
 <script>
-    // قاعدة البيانات مبنية ومربوطة بالـ Telegram ID توا
+    // قاعدة البيانات مبنية ومربوطة بالـ Telegram ID
     const membersDatabase = [
         {
             id: "1250493517", // ⚠️ اسبدل هذا الرقم بـ ID التيليجرام الحقيقي الخاص بك ليتعرف عليك تلقائياً
